@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: hola-mundo-node
-        image: TU_USUARIO_DOCKER_HUB/hola-mundo-node:latest
+        image: hola-mundo-node:1.0
         ports:
         - containerPort: 3000
         resources:
