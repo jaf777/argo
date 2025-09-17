@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hola-mundo-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hola-mundo-node
+  template:
+    metadata:
+      labels:
+        app: hola-mundo-node
+    spec:
+      containers:
+      - name: hola-mundo-node
+        image: hola-mundo-node:1.0
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "250m"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hola-mundo-node-svc
+spec:
+  type: NodePort
+  selector:
+    app: hola-mundo-node
+  ports:
+    - port: 80
+      targetPort: 3000
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hola-mundo-node-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: hola-mundo-node
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
