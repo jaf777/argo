@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: hola-mundo-node
-        image: jaf777/hola-mundo-node:1.0
+        image: hello-world:latest
         ports:
         - containerPort: 3000
         resources:
